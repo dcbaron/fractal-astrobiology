@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{parskip}
+
+\newcommand{\newc}{\newcommand}
+\newc{\lrp}[1]{\left(#1\right)}
+\newc{\al}[1]{\begin{align*}#1\end{align*}}
+\newc{\defin}{\textbf{Definition. }}
+\newc{\R}{\mathbb{R}}
+\newc{\E}{\mathbb{E}}
+\newc{\RR}{$\R$}
+\newc{\lrb}[1]{\left[#1\right]}
+\newc{\Db}{D_{\mathrm{box}}}
+\newc{\db}{d_{\mathrm{box}}}
+\DeclareMathOperator{\fe}{fe}
+\DeclareMathOperator{\FE}{FE}
+\DeclareMathOperator{\FS}{FS}
+\newc{\bits}{\ \mathrm{bits}}
+\newc{\Ne}{N(\epsilon)}
+\newc{\eps}{\epsilon}
+\newc{\ent}[1]{H\!\lrp{#1}}
+\newc{\entsum}[2]{-\sum_{#1}p(#2)\log p(#2)}
+
+
+\title{Entropy, Fractals, and Extraterrestrial Life}
+\author{A Talk by Daniel Baron}
+\date{Monday, May 16 at 4 p.m.}
+
+
+\begin{document}
+\subsubsection*{Shannon Entropy}
+\defin
+Let $(X,p)$ be a discrete probability space. The \emph{entropy} of $X$ is
+%Consider a set of $n$ mutually exclusive events with respective probabilities $p_1,\ldots,p_n$ (adding up to 1). The \emph{entropy} $H(p_1,\ldots,p_n)$ is a measure of our uncertainty in the outcome and is given by
+$$\ent{X}=-\sum_{x\in X}p(x)\log p(x).$$
+The choice of logarithm base determines the unit: bits, digits, nats, etc. The \emph{joint entropy} of spaces $X$ and $Y$ is then $H(X,Y)=\entsum{x,y}{x,y},$ and the \emph{conditional entropy} of $Y$ given $X$ is 
+$$H(Y\mid X)
+=\E_X\!\!\lrb{\ent{Y}}
+=-\sum_{x,y}p(x,y)\log p(y\mid x).$$
+We then have $H(X,Y)=H(X)+H(Y\mid X)$.
+
+Consider a sequence of probability spaces $X_1,\ldots,X_k$ with common ''alphabet'' $X$ and respective p.m.f.'s $p_1,\ldots,p_k$. Denote the $i$th joint space $(X_1,\ldots,X_i)$ by $Y_i$. Then we have
+$$H(Y_k) = H(X_1)+\sum_{i=2}^kH(X_i\mid Y_{i-1}).$$
+The infinite joint space $Y=(X_1,\ldots)$ is then said to have per-symbol entropy
+$$H(Y) = \lim_{k\to\infty}\frac{H(Y_k)}{k},$$
+provided this limit exists. In the special case when all allowed words of length $k$ are equiprobable, we know that $H(Y_k)=\log|Y_k|$, so the limit is
+$$H(Y) = \lim_{k\to\infty}\frac{\log|Y_k|}{k}.$$ 
+ 
+ 
+ 
+For a sequence of events satisfying certain properties
+
+\subsubsection*{Fractal Dimension}
+
+\defin The \emph{Box Dimension} (or Minkowski-Bouligand dimension) of a set $S\in\R^2$ is the limit
+$$\Db(S)=\lim_{\epsilon\to0}\frac{-\log N(\eps)}{\log\epsilon},$$
+(provided the limit exists) where $\Ne$ is the number of square boxes of side length $\eps$ required to cover the set. For any finite sequence $\eps_0>\cdots>\eps_n$, the slope of the best-fit line through the points $\lrp{-\log\eps_k,\log N(\eps_k)}$ is an approximation to $\Db$.
+%Note that this limit exists in many useful cases, and where it doesn't we can define the upper and lower box dimension using the $\limsup$ and $\liminf$ respectively.
+
+Notice in particular that, for any $r>0$, we must have
+$$\Db(S)=\lim_{k\to\infty}\frac{-\log N(r^{-k})}{\log r^{-k}}
+=\lim_{k\to\infty} \frac{\log_r N(r^{-k})}{k}.$$
+Accordingly, we define the \emph{entropy of a fractal} to be 
+$$H(S)=\Db(S) \bits.$$
+This is the (limiting) amount of information produced each time we ``zoom in'' by a factor of two.
+
+
+
+\subsubsection*{Image Analysis}
+\defin 
+An \emph{image} is a real-valued function defined on a region in $\R^2$.
+
+Often, our information about an image is limited to its (perhaps approximate) values at a set of regularly spaced lattice points on a rectangular region of the domain. It is then  convenient to represent this grid of values in a matrix, called the \emph{image matrix} (or simply the image, if the meaning is clear).
+
+\defin
+The \emph{fractal spectrum} of an image $I$ over a set of threshold values, $S\in\R$,  is the function $\FS:S\to\R$ such that, for $t\in S$,
+$$\FS(t)= \Db(I_t^{-1}),\quad\text{where }I_t^{-1}=\{x:|I(x)|\leq t\}.$$
+For an image matrix we take an approximation to $\Db$. If $S=\{t_1,\ldots,t_m\}$ is finite, we may write
+$\FS(I)=\lrb{\Db(t_1),\ldots,\Db(t_m)}^T\in\R^m$, where typically $t_1<\cdots<t_m$.
+
+\defin
+Let $I$ be an image matrix and let $I'$ be a copy of $I$ with scrambled entries (the entries of $I'$ are a uniform random permutation of the entries of $I$). For $t\in\R$, the \emph{fractal excess} of $I$ at $t$ is the expectation
+$$\fe(t)=\mathbb{E}\lrb{\FS_{M'}(t)-\FS_M(t)}.$$
+The fractal excess $\FE$ of $I$ over a threshold set $S$ is simply the restriction of $\fe$ to $S$; again, for finite $S$, we may write $\FE$ as a vector in $\R^m$.
+
+
+
+
+\end{document}
